@@ -27,7 +27,7 @@ public class Platform {
     private DesiredCapabilities getAndroidDesiredCapabilities(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
-        capabilities.setCapability("platformName", "Android");
+        capabilities.setCapability("platformName", "android");
         capabilities.setCapability("deviceName", "and80");
         capabilities.setCapability("platformVersion", "8.0");
         capabilities.setCapability("automationName", "Appium");
@@ -47,7 +47,6 @@ public class Platform {
         capabilities.setCapability("platformVersion", "11.3");
         capabilities.setCapability("app", "Users/itori/OneDrive/Desktop/AppiumAutomate" +
                 "/JavaAppiumMaven/JavaAppiumMaven/apks/Wikipedia.app");
-
         return capabilities;
     }
 
