@@ -1,8 +1,8 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class ArticlePageObject extends MainPageObject{
     protected static String
@@ -14,9 +14,10 @@ abstract public class ArticlePageObject extends MainPageObject{
             LIST_NAME_INPUT,
             OK_BTN,
             LIST_NAME_TPL,
+            OPTIONS_REMOVE_FROM_MY_LIST_BTN,
             CLOSE_ARTICLE_BTN;
 
-    public ArticlePageObject(AppiumDriver driver){
+    public ArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
 
@@ -33,17 +34,22 @@ abstract public class ArticlePageObject extends MainPageObject{
         WebElement title_element = waitForTitleElement();
         if (Platform.getInstance().isAndroid()){
             return waitForTitleElement().getAttribute("text");
-        } else {return title_element.getAttribute("name");}
+        } else if (Platform.getInstance().isIOS()){
+            return title_element.getAttribute("name");
+        } else {
+            return title_element.getText();
+        }
 
     }
 
     public void swipesToFooter(){
         if (Platform.getInstance().isAndroid()){
             this.swipeUpToFindElement(FOOTER_ELEMENT,"Cannot find end of article",40);
-        } else {
+        } else if (Platform.getInstance().isIOS()){
             this.swipeUpTitleElementAppear(FOOTER_ELEMENT, "Cannot swipe to footer", 40);
+        } else {
+            this.scrollWebPageTitleElementNotVisible(FOOTER_ELEMENT,"Cannot find end of article",40);
         }
-
     }
 
     public void addArticleToNewList(String newListName){
@@ -62,10 +68,25 @@ abstract public class ArticlePageObject extends MainPageObject{
     }
 
     public void closeArticle(){
-        this.waitForElementAndClick(CLOSE_ARTICLE_BTN,"Cannot find X button click",5);
+        if(Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()){
+            this.waitForElementAndClick(CLOSE_ARTICLE_BTN,"Cannot find X button click",5);
+        } else {
+            System.out.println("Method closeArticle() do nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
     public void addArticlesToMySaved(){
+        if(Platform.getInstance().isMW()){
+            this.removeArticleFromSavedIfItAdded();
+        }
         this.waitForElementAndClick(ADD_TO_READING_LIST_BTN, "Cannot find and click add to list button", 5);
+    }
+
+    public void removeArticleFromSavedIfItAdded(){
+        if(this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BTN)) {
+            this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BTN,
+                    "Cannot find and click button to remove article from saved", 1);
+            this.waitForElementPresent(ADD_TO_READING_LIST_BTN, "Cannot find option to add article to reading list");
+        }
     }
 }
