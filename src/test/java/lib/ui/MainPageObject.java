@@ -68,11 +68,6 @@ public class MainPageObject {
         Assert.assertEquals(error_message, actualText, expectedText);
     }
 
-    public void assertElementsMoreThanOne(String locator, String error_message) {
-        By by = this.getLocatorByString(locator);
-        Assert.assertTrue(error_message, driver.findElements(by).size() > 1);
-    }
-
     public void assertElementsHasText(String locator, String expectedText) {
         By by = this.getLocatorByString(locator);
         List<WebElement> listOfElements = driver.findElements(by);
@@ -177,19 +172,6 @@ public class MainPageObject {
         int amountOfElements = getAmountOfElements(locator);
         if (amountOfElements > 0) {
             String defaultMessage = "An element '" + locator + "' supposed tobe not present.";
-            throw new AssertionError(defaultMessage + "" + error_message);
-        }
-    }
-
-    public String waitForElementAndGetAttribute(String locator, String attribute, String errorMessage, long timeoutInSeconds) {
-        WebElement element = waitForElementPresent(locator, errorMessage, timeoutInSeconds);
-        return element.getAttribute(attribute);
-    }
-
-    public void assertElementPresent(String locator, String error_message) {
-        By by = this.getLocatorByString(locator);
-        if (!driver.findElement(by).isDisplayed()) {
-            String defaultMessage = "An element '" + locator + "' supposed tobe present";
             throw new AssertionError(defaultMessage + "" + error_message);
         }
     }

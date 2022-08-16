@@ -85,7 +85,7 @@ public class Platform {
         } else if (this.isMW()) {
             return new ChromeDriver(this.getMWChromeOptions());
         } else {
-            throw new Exception("Cannot detect type of Driver. Platform is: " + this.getPlatformVar());
+            throw new Exception("Cannot detect type of Driver. PLATFORM is: " + this.getPlatformVar());
         }
     }
 
@@ -104,7 +104,7 @@ public class Platform {
                 "Chrome/18.0.1025.166 Mobile Safari/535.19");
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("window-size = 340, 640");
+        chromeOptions.addArguments("window-size=340,640");
         return chromeOptions;
     }
 }
