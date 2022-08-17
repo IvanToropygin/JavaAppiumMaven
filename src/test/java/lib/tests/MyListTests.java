@@ -1,5 +1,7 @@
 package lib.tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -7,6 +9,7 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class MyListTests extends CoreTestCase {
@@ -15,6 +18,10 @@ public class MyListTests extends CoreTestCase {
             password = "";
 
     @Test
+    @Features(value = {@Feature(value = "List for reading"), @Feature(value = "Article")})
+    @DisplayName("test save first article to my list")
+    @Description("assert that save first article to my list is working")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaveFirstArticleToMyList() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
@@ -39,7 +46,7 @@ public class MyListTests extends CoreTestCase {
 
             articlePageObject.waitForTitleElement();
 
-            assertEquals("We are not on the same page after login.", articleTitle, articlePageObject.getArticleTitle());
+            Assert.assertEquals("We are not on the same page after login.", articleTitle, articlePageObject.getArticleTitle());
 
             articlePageObject.addArticlesToMySaved();
         }
@@ -60,6 +67,10 @@ public class MyListTests extends CoreTestCase {
     }
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article")})
+    @DisplayName("test save two articles to my list")
+    @Description("save two articles to my list, then delete first article from list")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaveTwoArticlesToMyList() {
         String searchLine = "Java";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);

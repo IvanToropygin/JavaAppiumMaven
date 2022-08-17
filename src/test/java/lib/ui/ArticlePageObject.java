@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,7 +17,6 @@ abstract public class ArticlePageObject extends MainPageObject{
             LIST_NAME_TPL,
             OPTIONS_REMOVE_FROM_MY_LIST_BTN,
             CLOSE_ARTICLE_BTN;
-
     public ArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
@@ -25,13 +25,16 @@ abstract public class ArticlePageObject extends MainPageObject{
         return LIST_NAME_TPL.replace("{LIST_NAME}", listName);
     }
 
+    @Step("wait For Title Element")
     public WebElement waitForTitleElement(){
         return this.waitForElementPresent(TITLE,
                 "Cannot find article title on page", 15);
     }
 
+    @Step("get Article Title")
     public String getArticleTitle(){
         WebElement title_element = waitForTitleElement();
+        screenshot(this.takeScreenshot("article title"));
         if (Platform.getInstance().isAndroid()){
             return waitForTitleElement().getAttribute("text");
         } else if (Platform.getInstance().isIOS()){
@@ -42,6 +45,7 @@ abstract public class ArticlePageObject extends MainPageObject{
 
     }
 
+    @Step("swipes To Footer")
     public void swipesToFooter(){
         if (Platform.getInstance().isAndroid()){
             this.swipeUpToFindElement(FOOTER_ELEMENT,"Cannot find end of article",40);
@@ -52,6 +56,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         }
     }
 
+    @Step("add Article To New List")
     public void addArticleToNewList(String newListName){
         this.waitForElementAndClick(OPTIONS_BTN, "Cannot find button to open article options",5);
         this.waitForElementAndClick(ADD_TO_READING_LIST_BTN,"Cannot find option to add article to reading list",5);
@@ -61,12 +66,14 @@ abstract public class ArticlePageObject extends MainPageObject{
         this.waitForElementAndClick(OK_BTN,"Cannot find 'OK' button",5);
     }
 
+    @Step("add Article To Existing List")
     public void addArticleToExistingList(String listName){
         this.waitForElementAndClick(OPTIONS_BTN, "Cannot find button to open article options",5);
         this.waitForElementAndClick(ADD_TO_READING_LIST_BTN,"Cannot find option to add article to reading list",5);
         this.waitForElementAndClick(getListXPathByName(listName),"Cannot find existing list name",5);
     }
 
+    @Step("close Article")
     public void closeArticle(){
         if(Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()){
             this.waitForElementAndClick(CLOSE_ARTICLE_BTN,"Cannot find X button click",5);
@@ -75,6 +82,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         }
     }
 
+    @Step("add Articles To My Saved")
     public void addArticlesToMySaved(){
         if(Platform.getInstance().isMW()){
             this.removeArticleFromSavedIfItAdded();
@@ -82,6 +90,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         this.waitForElementAndClick(ADD_TO_READING_LIST_BTN, "Cannot find and click add to list button", 5);
     }
 
+    @Step("remove Article From Saved If It Added")
     public void removeArticleFromSavedIfItAdded(){
         if(this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BTN)) {
             this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BTN,
