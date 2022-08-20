@@ -4,7 +4,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AuthorizationPageObject extends MainPageObject{
     private static final String
-    LOGIN_BTN = "xpath://body/div/a[text()='log in']",
+    LOGIN_BTN = "xpath://a[text()='Log in']",
     LOGIN_INPUT = "css:input[name='wpName']",
     PASSWORD_INPUT = "css:input[name='wpPassword']",
     SUBMIT_BTN = "css:button#wpLoginAttempt";
@@ -15,7 +15,7 @@ public class AuthorizationPageObject extends MainPageObject{
 
     public void clickAuthButton(){
         this.waitForElementPresent(LOGIN_BTN, "Cannot find auth button", 5);
-        this.waitForElementAndClick(LOGIN_BTN, "Cannot find auth button", 5);
+        this.tryClickElementWithFewAttempts(LOGIN_BTN, "Cannot find auth button", 5);
     }
 
     public void enterLoginData(String login, String password){
@@ -24,6 +24,10 @@ public class AuthorizationPageObject extends MainPageObject{
     }
 
     public void submitForm(){
-        this.waitForElementAndClick(SUBMIT_BTN, "Cannot find submit button", 5);
+        if (!LOGIN_INPUT.isEmpty() && !PASSWORD_INPUT.isEmpty()){
+            this.waitForElementAndClick(SUBMIT_BTN, "Cannot find submit button", 5);
+        } else {
+            System.out.println("LOGIN_INPUT and PASSWORD_INPUT must be filled");
+        }
     }
 }

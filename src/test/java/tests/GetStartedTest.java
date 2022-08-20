@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import io.qameta.allure.*;
 import io.qameta.allure.junit4.DisplayName;
@@ -14,7 +14,7 @@ public class GetStartedTest extends CoreTestCase {
     @Description("assert pass welcome on web")
     @Severity(value = SeverityLevel.NORMAL)
     public void testPassThroughWelcome(){
-        if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOS()){return;}
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){return;}
 
         WelcomePageObject welcomePageObject = new WelcomePageObject(driver);
         welcomePageObject.waitForLearnMoreLink();

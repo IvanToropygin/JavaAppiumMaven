@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import io.qameta.allure.*;
 import io.qameta.allure.junit4.DisplayName;
@@ -14,8 +14,8 @@ import org.junit.Test;
 
 public class MyListTests extends CoreTestCase {
     private static final String nameOfList = "Learning Java",
-            login = "",
-            password = "";
+            login = "Test1986maven",
+            password = "maven@automate";
 
     @Test
     @Features(value = {@Feature(value = "List for reading"), @Feature(value = "Article")})
@@ -24,10 +24,9 @@ public class MyListTests extends CoreTestCase {
     @Severity(value = SeverityLevel.NORMAL)
     public void testSaveFirstArticleToMyList() {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
-
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
-        searchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
@@ -67,41 +66,44 @@ public class MyListTests extends CoreTestCase {
     }
 
     @Test
-    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article")})
+    @Features(value = {@Feature(value = "List for reading"), @Feature(value = "Article")})
     @DisplayName("test save two articles to my list")
     @Description("save two articles to my list, then delete first article from list")
     @Severity(value = SeverityLevel.NORMAL)
     public void testSaveTwoArticlesToMyList() {
-        String searchLine = "Java";
-        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
-        searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine(searchLine);
-        searchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
-        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
-        articlePageObject.waitForTitleElement();
-
-        String firstArticleTitle = articlePageObject.getArticleTitle();
-        String nameOfList = "HomeWork";
-
-        articlePageObject.addArticleToNewList(nameOfList);
-        articlePageObject.closeArticle();
-
-        searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine(searchLine);
-        searchPageObject.clickByArticleWithSubstring("High-level");
-        articlePageObject.waitForTitleElement();
-        String secondArticleTitle = articlePageObject.getArticleTitle();
-        articlePageObject.addArticleToExistingList(nameOfList);
-        articlePageObject.closeArticle();
 
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        navigationUI.openNavigation();
+        navigationUI.clickLogIn();
+
+        if (Platform.getInstance().isMW()) {
+            AuthorizationPageObject auth = new AuthorizationPageObject(driver);
+            auth.enterLoginData(login, password);
+            auth.submitForm();
+        }
+
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        articlePageObject.waitForTitleElement();
+        articlePageObject.addArticlesToMySaved();
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Island");
+        articlePageObject.waitForTitleElement();
+        articlePageObject.addArticlesToMySaved();
+
+        navigationUI.openNavigation();
+        navigationUI.clickMyLists();
+        navigationUI.removeTopArticleFromMyList();
+
+        navigationUI.openNavigation();
         navigationUI.clickMyLists();
 
-        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
-        myListsPageObject.openListByName(nameOfList);
-        myListsPageObject.swipeLeftArticleToDelete(firstArticleTitle);
-
-        myListsPageObject.waitForArticleToDisappearByTitle(firstArticleTitle);
-        myListsPageObject.waitForArticleToAppearByTitle(secondArticleTitle);
+        navigationUI.assertAmountArticlesInMyList(1);
     }
 }

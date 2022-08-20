@@ -50,9 +50,9 @@ abstract public class ArticlePageObject extends MainPageObject{
         if (Platform.getInstance().isAndroid()){
             this.swipeUpToFindElement(FOOTER_ELEMENT,"Cannot find end of article",40);
         } else if (Platform.getInstance().isIOS()){
-            this.swipeUpTitleElementAppear(FOOTER_ELEMENT, "Cannot swipe to footer", 40);
+            this.swipeUpTitleElementAppear(FOOTER_ELEMENT, "Cannot find end of article", 40);
         } else {
-            this.scrollWebPageTitleElementNotVisible(FOOTER_ELEMENT,"Cannot find end of article",40);
+            this.scrollWebPageTillElementNotVisible(FOOTER_ELEMENT,"Cannot find end of article",40);
         }
     }
 
@@ -87,7 +87,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         if(Platform.getInstance().isMW()){
             this.removeArticleFromSavedIfItAdded();
         }
-        this.waitForElementAndClick(ADD_TO_READING_LIST_BTN, "Cannot find and click add to list button", 5);
+        this.tryClickElementWithFewAttempts(ADD_TO_READING_LIST_BTN, "Cannot find and click add to list button", 5);
     }
 
     @Step("remove Article From Saved If It Added")

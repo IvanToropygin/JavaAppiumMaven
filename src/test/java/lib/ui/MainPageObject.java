@@ -221,7 +221,7 @@ public class MainPageObject {
         }
     }
 
-    public void scrollWebPageTitleElementNotVisible(String locator, String error_message, int max_swipes){
+    public void scrollWebPageTillElementNotVisible(String locator, String error_message, int max_swipes){
         int already_swiped = 0;
         WebElement webElement = this.waitForElementPresent(locator, error_message);
         while (!this.isElementLocatedOnTheScreen(locator)){

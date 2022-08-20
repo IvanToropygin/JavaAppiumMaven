@@ -14,7 +14,7 @@ abstract public class SearchPageObject extends MainPageObject {
             SEARCH_CANCEL_BTN,
             SEARCH_RESULT_BY_SUBSTRING_TPL,
             SEARCH_RESULT_ELEMENT,
-            SEARCh_EMPTY_RESULT_LABEL;
+            SEARCH_EMPTY_RESULT_LABEL;
 
     public SearchPageObject(RemoteWebDriver driver) {
         super(driver);
@@ -78,7 +78,7 @@ abstract public class SearchPageObject extends MainPageObject {
 
     @Step("wait for empty result label")
     public void waitForEmptyResultLabel() {
-        this.waitForElementPresent(SEARCh_EMPTY_RESULT_LABEL, "Cannot find empty result label", 15);
+        this.waitForElementPresent(SEARCH_EMPTY_RESULT_LABEL, "Cannot find empty result label", 15);
     }
 
     @Step("clear searching field")

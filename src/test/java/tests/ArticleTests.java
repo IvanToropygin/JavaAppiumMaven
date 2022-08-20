@@ -1,4 +1,4 @@
-package lib.tests;
+package tests;
 
 import io.qameta.allure.*;
 import io.qameta.allure.junit4.DisplayName;
@@ -25,7 +25,7 @@ public class ArticleTests extends CoreTestCase {
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
 
-        String titleExpected = "ava";
+        String titleExpected = "Java";
         String titleActual = articlePageObject.getArticleTitle();
 
         Assert.assertEquals("unexpected title", titleActual, titleExpected);

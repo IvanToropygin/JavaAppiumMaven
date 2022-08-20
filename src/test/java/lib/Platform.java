@@ -20,8 +20,7 @@ public class Platform {
 
     private static Platform instance;
 
-    private Platform() {
-    }
+    private Platform() {}
 
     public static Platform getInstance() {
         if (instance == null) {
